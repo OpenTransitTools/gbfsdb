@@ -21,6 +21,15 @@ class Stations(object):
         ret_val = []
         status = self.station_status
         for k in self.station_cache:
+            if status[k].get('is_renting') or status[k].get('is_returning'):
+                info = {'station':self.station_cache[k], 'status':status[k]}
+                ret_val.append(info)
+        return ret_val
+
+    def all_stations(self):
+        ret_val = []
+        status = self.station_status
+        for k in self.station_cache:
             info = {'station':self.station_cache[k], 'status':status[k]}
             ret_val.append(info)
         return ret_val
