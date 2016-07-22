@@ -2,10 +2,10 @@ import os
 import datetime
 import logging
 log = logging.getLogger(__file__)
-logging.basicConfig(level=logging.DEBUG)
-
+#logging.basicConfig(level=logging.DEBUG)
 
 from ott.gbfsdb.gbfs_client import GbfsClient
+
 
 class Stations(object):
     ''' combine stations

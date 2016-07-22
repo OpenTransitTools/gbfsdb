@@ -57,7 +57,7 @@ setup(
     extras_require=extras_require,
     entry_points="""\
         [console_scripts]
-        loader = ott.gbfsdb.loader:main
+        stations = ott.gbfsdb.stations:main
     """,
 
 )
