@@ -12,8 +12,8 @@ requires = [
     'argparse',
     'simplejson',
     'geojson',
+    'sqlalchemy<1.2',
     'geoalchemy2>=0.2.4',
-    'sqlalchemy>=0.9',
 ]
 
 
