@@ -2,6 +2,7 @@ import os
 import sys
 from setuptools import setup, find_packages
 
+
 here = os.path.abspath(os.path.dirname(__file__))
 
 README = open(os.path.join(here, 'README.md')).read()
@@ -12,10 +13,9 @@ requires = [
     'argparse',
     'simplejson',
     'geojson',
-    'sqlalchemy<1.2',
-    'geoalchemy2>=0.2.4',
+    'sqlalchemy',
+    'geoalchemy2'
 ]
-
 
 dev_extras = []
 oracle_extras = ['cx_oracle>=5.1']
@@ -25,10 +25,6 @@ extras_require = dict(
     dev=dev_extras,
     postgresql=postgresql_extras,
 )
-
-if sys.version_info[:2] <= (2, 6):
-    requires.append('argparse>=1.2.1')
-    extras_require['dev'].append('unittest2')
 
 setup(
     name='ott.gbfsdb',
