@@ -1,10 +1,7 @@
-import os
 import datetime
+from ott.utils import json_utils
 import logging
 log = logging.getLogger(__file__)
-
-from ott.utils import json_utils
-
 
 GBFS_JSON = 'gbfs.json'
 SYSTEM_INFORMATION_JSON = 'system_information.json'
@@ -19,10 +16,10 @@ SYSTEM_ALERTS_JSON = 'system_alerts.json'
 
 
 class GbfsClient(object):
-    ''' simple wget client for streaming each GBFS file from a vendor gbfs service
+    """ simple wget client for streaming each GBFS file from a vendor gbfs service
         @see https://github.com/NABSA/gbfs
         @see https://github.com/NABSA/gbfs/blob/master/systems.csv
-    '''
+    """
 
     def __init__(self, base_url):
         self.base_url = base_url
@@ -65,7 +62,8 @@ class GbfsClient(object):
 def main():
     log.info("\nRunning {}\n".format(datetime.datetime.now()))
     a = GbfsClient('http://biketownpdx.socialbicycles.com/opendata')
-    print a.station_status()
+    print(a.station_status())
+
 
 if __name__ == '__main__':
     main()
