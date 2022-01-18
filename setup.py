@@ -55,6 +55,7 @@ setup(
     entry_points="""\
         [console_scripts]
         stations = ott.gbfsdb.stations:main
+        zipcar = ott.gbfsdb.zipcar.scraper:main
     """,
 
 )
