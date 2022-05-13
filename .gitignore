@@ -3,8 +3,7 @@ ott.openlayers.*
 otp_report.html
 build-config.json
 router-config.json
-data.json
-data.json.???
+data.json*
 lucene
 ned/
 *.v
