@@ -18,12 +18,12 @@ class GbfsClient(object):
             json = gbfs['data'][lang]['feeds']
             self.gbfs_links = json_utils.rec_array_to_dict(json, 'name', 'url')
 
-    def _curl_data(self, data_name, def_val=[]):
+    def _curl_data(self, data_name, raw_data=True, def_val={}):
         ret_val = None
         if data_name in self.gbfs_links:
             #url = "{}/{}".format(self.base_url, api_file)
             url = self.gbfs_links[data_name]
-            ret_val = json_utils.stream_json(url, def_val=def_val)
+            ret_val = json_utils.stream_json(url, raw_data=raw_data, def_val=def_val)
         return ret_val
 
     def gbfs_versions(self):
@@ -44,9 +44,9 @@ class GbfsClient(object):
     def station_status(self):
         return self._curl_data("station_status")
 
-    def free_bike_status(self, check_free=True, check_coords=True, check_date=False):
+    def check_free_bike_data(self, check_free=True, check_coords=True, check_date=False):
         ret_val = []
-        json = self._curl_data("free_bike_status")
+        json = self._curl_data("free_bike_status", raw_data=False)
         recs = json['data']['bikes'] if json_utils.exists_in(json, 'data', 'bikes') else []
 
         for r in recs:
@@ -62,6 +62,9 @@ class GbfsClient(object):
             if add:    
                 ret_val.append(r)
         return ret_val
+
+    def free_bike_status(self):
+        return self._curl_data("free_bike_status")
 
     def system_hours(self):
         return self._curl_data("system_hours")

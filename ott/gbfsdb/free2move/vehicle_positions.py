@@ -5,8 +5,6 @@ log = logging.getLogger(__file__)
 
 
 portland = 'https://www.free2move.com/carsharing/api/trimet/gbfs/6076e74f102f56f35fdc9bb8'
-# "data":{"en":{"feeds":[{"name":"system_information","url":"..."}
-
 
 def main():
     log.info("\nRunning {}\n".format(datetime.datetime.now()))
