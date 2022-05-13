@@ -10,39 +10,45 @@ class GbfsClient(object):
     @see https://github.com/NABSA/gbfs
     @see https://github.com/NABSA/gbfs/blob/master/systems.csv
     """
-    GBFS_JSON = 'gbfs.json'
-    SYSTEM_INFORMATION_JSON = 'system_information.json'
-    STATION_STATUS_JSON = 'station_status.json'
-    STATION_INFO_JSON = 'station_information.json'
-    FREE_BIKE_STATUS_JSON = 'free_bike_status.json'
-    SYSTEM_HOURS_JSON = 'system_hours.json'
-    SYSTEM_CALENDAR_JSON = 'system_calendar.json'
-    SYSTEM_REGIONS_JSON = 'system_regions.json'
-    SYSTEM_PRICING_PLANS_JSON = 'system_pricing_plans.json'
-    SYSTEM_ALERTS_JSON = 'system_alerts.json'
-
-
-    def __init__(self, base_url):
+    def __init__(self, base_url, lang="en"):
+        # import pdb; pdb.set_trace()
         self.base_url = base_url
+        gbfs = json_utils.stream_json(base_url)
+        if json_utils.exists_in(gbfs, 'data', lang, 'feeds'):
+            json = gbfs['data'][lang]['feeds']
+            self.gbfs_links = json_utils.rec_array_to_dict(json, 'name', 'url')
 
-    def gbfs(self):
-        return self.stream_json(self.GBFS_JSON)
+    def _curl_data(self, data_name, raw_data=True, def_val={}):
+        ret_val = None
+        if data_name in self.gbfs_links:
+            #url = "{}/{}".format(self.base_url, api_file)
+            url = self.gbfs_links[data_name]
+            ret_val = json_utils.stream_json(url, raw_data=raw_data, def_val=def_val)
+        return ret_val
+
+    def gbfs_versions(self):
+        return self._curl_data("gbfs_versions")
 
     def system_information(self):
-        return self.stream_json(self.SYSTEM_INFORMATION_JSON)
+        return self._curl_data("system_information")
+
+    def vehicle_types(self):
+        return self._curl_data("vehicle_types")
 
     def station_status(self):
-        return self.stream_json(self.STATION_STATUS_JSON)
-
+        return self._curl_data("station_status")
+        
     def station_information(self):
-        return self.stream_json(self.STATION_INFO_JSON)
+        return self._curl_data("station_information")
 
-    def free_bike_status(self, check_free=True, check_coords=True, check_date=False):
+    def station_status(self):
+        return self._curl_data("station_status")
+
+    def check_free_bike_data(self, check_free=True, check_coords=True, check_date=False):
         ret_val = []
-        json = self.stream_json(self.FREE_BIKE_STATUS_JSON)
-        recs = json['data']['bikes']
+        json = self._curl_data("free_bike_status", raw_data=False)
+        recs = json['data']['bikes'] if json_utils.exists_in(json, 'data', 'bikes') else []
 
-        #import pdb; pdb.set_trace()
         for r in recs:
             add = False
             if r:
@@ -57,30 +63,26 @@ class GbfsClient(object):
                 ret_val.append(r)
         return ret_val
 
+    def free_bike_status(self):
+        return self._curl_data("free_bike_status")
+
     def system_hours(self):
-        return self.stream_json(self.SYSTEM_HOURS_JSON)
-
-    def system_calendar(self):
-        return self.stream_json(self.SYSTEM_CALENDAR_JSON)
-
-    def system_regions(self):
-        return self.stream_json(self.SYSTEM_REGIONS_JSON)
-
-    def system_pricing_plans(self):
-        return self.stream_json(self.SYSTEM_PRICING_PLANS_JSON)
+        return self._curl_data("system_hours")
 
     def system_alerts(self):
-        return self.stream_json(self.SYSTEM_ALERTS_JSON)
+        return self._curl_data("system_alerts")
 
-    def stream_json(self, api_file, def_val=[]):
-        ret_val = def_val
-        url = "{}/{}".format(self.base_url, api_file)
-        try:
-            ret_val = json_utils.stream_json(url)
-        except Exception as e:
-            log.error(url)
-            log.error(e)
-        return ret_val
+    def system_calendar(self):
+        return self._curl_data("system_calendar")
+
+    def system_regions(self):
+        return self._curl_data("system_regions")
+
+    def system_pricing_plans(self):
+        return self._curl_data("system_pricing_plans")
+
+    def geofencing_zones(self):
+        return self._curl_data("geofencing_zones")
 
 
 def main():
