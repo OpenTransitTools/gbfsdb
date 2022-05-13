@@ -1,5 +1,5 @@
 MACHINES=${MACHINES:-"maps8 maps9 maps10"}
-DIR=~/htdocs/carshare/
+DIR=~/htdocs/carshare
 FILE=data.json
 
 
@@ -37,7 +37,16 @@ function run_curl() {
   company=$1
   size=${2:-11111}
 
+  date
   ./bin/$company > $FILE.$company
-  scp_file $FILE.$company $DIR:$FILE $size
+  scp_file $FILE.$company $DIR/$company/$FILE $size
   rm $FILE.$company
 }
+
+
+# min / hour / month-day / month / weekday
+
+# CARSHARE data updates (see gbfsdb)
+# 1 1 * * *    rm carshare.log
+# */3 * * * *  source ~/.bashrc; cd ~/gbfsdb; scripts/free2move.sh >> carshare.log 2>&1
+# 1 4,13 * * * source ~/.bashrc; cd ~/gbfsdb; scripts/zipcar.sh >> carshare.log 2>&1
