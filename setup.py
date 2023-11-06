@@ -19,7 +19,7 @@ requires = [
 
 dev_extras = []
 oracle_extras = ['cx_oracle>=5.1']
-postgresql_extras = ['psycopg2>=2.4.2']
+postgresql_extras = ['psycopg2-binary']
 
 extras_require = dict(
     dev=dev_extras,
